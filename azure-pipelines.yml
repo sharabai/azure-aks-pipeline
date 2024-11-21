@@ -1,0 +1,9 @@
+trigger: none
+
+pr: none
+
+pool: "self-hosted-pool"
+
+steps:
+  - script: echo Hello, world!
+    displayName: "Run a one-line script"
