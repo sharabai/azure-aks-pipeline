@@ -9,60 +9,68 @@ pool: "self-hosted-pool"
 
 stages:
   - stage: DeployAKS
-    steps:
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: "$(subscription)"
-          scriptType: "bash"
-          inlineScript: |
-            # Check if cluster exists
-            if ! az aks show --name $(clusterName) --resource-group $(resourceGroup) &>/dev/null; then
-              az aks create \
-                --resource-group $(resourceGroup) \
-                --name $(clusterName) \
-                --node-count 1
-            fi
+    jobs:
+      - job:
+        steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: "$(subscription)"
+              scriptType: "bash"
+              inlineScript: |
+                # Check if cluster exists
+                if ! az aks show --name $(clusterName) --resource-group $(resourceGroup) &>/dev/null; then
+                  az aks create \
+                    --resource-group $(resourceGroup) \
+                    --name $(clusterName) \
+                    --node-count 1
+                fi
 
   - stage: DeployIngress
     dependsOn: DeployAKS
-    steps:
-      - template: get-cluster-credentials-task.yml
+    jobs:
+      - job:
+        steps:
+          - template: get-cluster-credentials-task.yml
 
-      - task: HelmDeploy@1
-        inputs:
-          command: "upgrade"
-          chartName: "ingress-nginx/ingress-nginx"
-          releaseName: "nginx-ingress"
-          install: true
-          arguments: "--repo https://kubernetes.github.io/ingress-nginx --create-namespace --namespace ingress-basic"
+          - task: HelmDeploy@1
+            inputs:
+              command: "upgrade"
+              chartName: "ingress-nginx/ingress-nginx"
+              releaseName: "nginx-ingress"
+              install: true
+              arguments: "--repo https://kubernetes.github.io/ingress-nginx --create-namespace --namespace ingress-basic"
 
   - stage: DeployApps
     dependsOn: DeployIngress
-    steps:
-      - template: get-cluster-credentials-task.yml
+    jobs:
+      - job:
+        steps:
+          - template: get-cluster-credentials-task.yml
 
-      - task: HelmDeploy@1
-        inputs:
-          command: "upgrade"
-          chartName: "ghost"
-          releaseName: "app1"
-          install: true
-          arguments: "--repo https://charts.bitnami.com/bitnami --set service.name=app1-ghost"
+          - task: HelmDeploy@1
+            inputs:
+              command: "upgrade"
+              chartName: "ghost"
+              releaseName: "app1"
+              install: true
+              arguments: "--repo https://charts.bitnami.com/bitnami --set service.name=app1-ghost"
 
-      - task: HelmDeploy@1
-        inputs:
-          command: "upgrade"
-          chartName: "wordpress"
-          releaseName: "app2"
-          install: true
-          arguments: "--repo https://charts.bitnami.com/bitnami --set service.name=app2-wordpress"
+          - task: HelmDeploy@1
+            inputs:
+              command: "upgrade"
+              chartName: "wordpress"
+              releaseName: "app2"
+              install: true
+              arguments: "--repo https://charts.bitnami.com/bitnami --set service.name=app2-wordpress"
 
   - stage: ConfigureIngress
     dependsOn: DeployApps
-    steps:
-      - template: get-cluster-credentials-task.yml
+    jobs:
+      - job:
+        steps:
+          - template: get-cluster-credentials-task.yml
 
-      - task: Kubernetes@1
-        inputs:
-          command: "apply"
-          arguments: "-f kubernetes/ingress.yml"
+          - task: Kubernetes@1
+            inputs:
+              command: "apply"
+              arguments: "-f kubernetes/ingress.yml"
