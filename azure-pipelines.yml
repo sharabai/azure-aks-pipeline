@@ -16,6 +16,7 @@ stages:
             inputs:
               azureSubscription: "$(subscription)"
               scriptType: "bash"
+              scriptLocation: "inlineScript"
               inlineScript: |
                 # Check if cluster exists
                 if ! az aks show --name $(clusterName) --resource-group $(resourceGroup) &>/dev/null; then
