@@ -23,7 +23,7 @@ stages:
                   az aks create \
                     --resource-group $(resourceGroup) \
                     --name $(clusterName) \
-                    --node-count 1
+                    --node-count 1 \
                     --generate-ssh-keys
                 fi
 
