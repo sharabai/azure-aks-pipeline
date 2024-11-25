@@ -32,10 +32,10 @@ stages:
     jobs:
       - job:
         steps:
-          - template: get-cluster-credentials-task.yml
-
           - task: HelmDeploy@1
             inputs:
+              connectionType: "Kubernetes Service Connection"
+              kubernetesServiceConnection: "aks"
               command: "upgrade"
               chartName: "ingress-nginx/ingress-nginx"
               releaseName: "nginx-ingress"
@@ -47,10 +47,10 @@ stages:
     jobs:
       - job:
         steps:
-          - template: get-cluster-credentials-task.yml
-
           - task: HelmDeploy@1
             inputs:
+              connectionType: "Kubernetes Service Connection"
+              kubernetesServiceConnection: "aks"
               command: "upgrade"
               chartName: "ghost"
               releaseName: "app1"
@@ -59,6 +59,8 @@ stages:
 
           - task: HelmDeploy@1
             inputs:
+              connectionType: "Kubernetes Service Connection"
+              kubernetesServiceConnection: "aks"
               command: "upgrade"
               chartName: "wordpress"
               releaseName: "app2"
@@ -70,8 +72,6 @@ stages:
     jobs:
       - job:
         steps:
-          - template: get-cluster-credentials-task.yml
-
           - task: Kubernetes@1
             inputs:
               command: "apply"
