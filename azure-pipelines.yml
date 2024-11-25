@@ -32,6 +32,11 @@ stages:
     jobs:
       - job:
         steps:
+          - task: KubectlInstaller@0
+            displayName: Kubectl installer
+            inputs:
+              kubectlVersion: latest
+
           - task: HelmInstaller@1
             displayName: Helm installer
             inputs:
