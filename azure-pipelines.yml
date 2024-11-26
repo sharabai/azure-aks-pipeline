@@ -26,21 +26,14 @@ stages:
                     --node-count 1 \
                     --generate-ssh-keys
                 fi
+          - template: get-cluster-credentials-task.yml
 
   - stage: DeployIngress
     dependsOn: DeployAKS
     jobs:
       - job:
         steps:
-          - task: KubectlInstaller@0
-            displayName: Kubectl installer
-            inputs:
-              kubectlVersion: latest
-
-          - task: HelmInstaller@1
-            displayName: Helm installer
-            inputs:
-              helmVersionToInstall: latest
+          - template: add-tool-installer-task.yml
 
           - script: |
               helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -62,6 +55,8 @@ stages:
     jobs:
       - job:
         steps:
+          - template: add-tool-installer-task.yml
+
           - task: HelmDeploy@1
             inputs:
               connectionType: "Kubernetes Service Connection"
@@ -87,6 +82,8 @@ stages:
     jobs:
       - job:
         steps:
+          - template: add-tool-installer-task.yml
+
           - task: Kubernetes@1
             inputs:
               command: "apply"
