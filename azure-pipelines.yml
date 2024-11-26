@@ -92,6 +92,7 @@ stages:
           - template: add-tool-installer-task.yml
 
           - task: Kubernetes@1
+            kubernetesServiceConnection: "aks"
             inputs:
               command: "apply"
               arguments: "-f kubernetes/ingress.yml"
