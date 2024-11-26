@@ -53,6 +53,7 @@ stages:
               kubernetesServiceConnection: "aks"
               command: "upgrade"
               chartName: "ingress-nginx/ingress-nginx"
+              releaseName: "aks-ingress-nginx"
               install: true
               arguments: "--create-namespace --namespace ingress-basic"
 
