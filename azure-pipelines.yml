@@ -72,7 +72,7 @@ stages:
               chartName: "examples/hello-world"
               releaseName: "app1"
               install: true
-              arguments: "--set service.name=app1"
+              arguments: "--set fullnameOverride=app1"
 
           - task: HelmDeploy@1
             inputs:
@@ -82,7 +82,6 @@ stages:
               chartName: "salaboy/helm-chart-example"
               releaseName: "app2"
               install: true
-              arguments: "--set service.name=app2"
 
   - stage: ConfigureIngress
     dependsOn: DeployApps

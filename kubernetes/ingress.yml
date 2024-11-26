@@ -19,6 +19,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app2
+                name: fmtok8s-monolith
                 port:
                   number: 80
