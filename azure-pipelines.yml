@@ -94,6 +94,6 @@ stages:
           - task: Kubernetes@1
             inputs:
               connectionType: "Kubernetes Service Connection"
-              kubernetesServiceConnection: "aks"
+              kubernetesServiceEndpoint: "aks"
               command: "apply"
               arguments: "-f kubernetes/ingress.yml"
