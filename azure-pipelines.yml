@@ -59,6 +59,7 @@ stages:
 
           - script: |
               helm repo add bitnami https://charts.bitnami.com/bitnami
+              helm repo add examples https://helm.github.io/examples
               helm repo update
             displayName: Add bitnami Repo
 
@@ -67,10 +68,10 @@ stages:
               connectionType: "Kubernetes Service Connection"
               kubernetesServiceConnection: "aks"
               command: "upgrade"
-              chartName: "bitnami/ghost"
+              chartName: "examples/hello-world"
               releaseName: "app1"
               install: true
-              arguments: "--set service.name=app1-ghost"
+              arguments: "--set service.name=app1"
 
           - task: HelmDeploy@1
             inputs:
