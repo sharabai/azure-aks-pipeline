@@ -66,10 +66,9 @@ stages:
             inputs:
               connectionType: "Kubernetes Service Connection"
               kubernetesServiceConnection: "aks"
-              command: "upgrade"
+              command: "install"
               chartName: "bitnami/ghost"
               releaseName: "app1"
-              install: true
               arguments: "--set service.name=app1-ghost"
 
           - task: HelmDeploy@1
