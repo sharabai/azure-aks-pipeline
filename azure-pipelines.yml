@@ -57,25 +57,30 @@ stages:
         steps:
           - template: add-tool-installer-task.yml
 
-          - task: HelmDeploy@1
-            inputs:
-              connectionType: "Kubernetes Service Connection"
-              kubernetesServiceConnection: "aks"
-              command: "upgrade"
-              chartName: "ghost"
-              releaseName: "app1"
-              install: true
-              arguments: "--repo https://charts.bitnami.com/bitnami --set service.name=app1-ghost"
+          - script: |
+              helm repo add bitnami https://charts.bitnami.com/bitnami
+              helm repo update
+            displayName: Add bitnami Repo
 
           - task: HelmDeploy@1
             inputs:
               connectionType: "Kubernetes Service Connection"
               kubernetesServiceConnection: "aks"
               command: "upgrade"
-              chartName: "wordpress"
+              chartName: "bitnami/ghost"
+              releaseName: "app1"
+              install: true
+              arguments: "--set service.name=app1-ghost"
+
+          - task: HelmDeploy@1
+            inputs:
+              connectionType: "Kubernetes Service Connection"
+              kubernetesServiceConnection: "aks"
+              command: "upgrade"
+              chartName: "bitnami/wordpress"
               releaseName: "app2"
               install: true
-              arguments: "--repo https://charts.bitnami.com/bitnami --set service.name=app2-wordpress"
+              arguments: "--set service.name=app2-wordpress"
 
   - stage: ConfigureIngress
     dependsOn: DeployApps
