@@ -19,6 +19,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app2-wordpress
+                name: app2
                 port:
                   number: 80

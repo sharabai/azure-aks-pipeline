@@ -60,6 +60,7 @@ stages:
           - script: |
               helm repo add bitnami https://charts.bitnami.com/bitnami
               helm repo add examples https://helm.github.io/examples
+              helm repo add salaboy https://salaboy.github.io/helm/
               helm repo update
             displayName: Add bitnami Repo
 
@@ -78,10 +79,10 @@ stages:
               connectionType: "Kubernetes Service Connection"
               kubernetesServiceConnection: "aks"
               command: "upgrade"
-              chartName: "bitnami/wordpress"
+              chartName: "salaboy/helm-chart-example"
               releaseName: "app2"
               install: true
-              arguments: "--set service.name=app2-wordpress"
+              arguments: "--set service.name=app2"
 
   - stage: ConfigureIngress
     dependsOn: DeployApps
