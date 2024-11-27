@@ -95,4 +95,4 @@ stages:
               connectionType: "Kubernetes Service Connection"
               kubernetesServiceEndpoint: "aks"
               command: "apply"
-              arguments: "-f kubernetes/ingress.yml"
+              arguments: "-f kubernetes"

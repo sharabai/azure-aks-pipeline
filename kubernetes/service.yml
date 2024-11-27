@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadatea:
+  name: aks-ingress-nginx-controller
+  namespace: ingress-basic
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-health-probe-path: "/healthz"
+    service.beta.kubernetes.io/azure-load-balancer-health-probe-protocol: "Http"
+    service.beta.kubernetes.io/azure-load-balancer-health-probe-port: "80"
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: aks-ingress-nginx
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: https
