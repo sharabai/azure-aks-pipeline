@@ -10,11 +10,8 @@ controller:
       app.kubernetes.io/component: controller
       app.kubernetes.io/instance: aks-ingress-nginx
     ports:
-      - name: http
-        protocol: TCP
-        port: 80
-        targetPort: http
-      - name: https
-        protocol: TCP
-        port: 443
-        targetPort: https
+      http: 80
+      https: 443
+    targetPorts:
+      http: http
+      https: https
