@@ -1,6 +1,6 @@
 apiVersion: v1
 kind: Service
-metadatea:
+metadata:
   name: aks-ingress-nginx-controller
   namespace: ingress-basic
   annotations:
