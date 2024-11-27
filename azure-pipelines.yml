@@ -49,6 +49,7 @@ stages:
               releaseName: "aks-ingress-nginx"
               install: true
               namespace: "ingress-basic"
+              arguments: "--values values.yml --wait"
 
   - stage: DeployApps
     dependsOn: DeployIngress
@@ -96,14 +97,3 @@ stages:
               kubernetesServiceEndpoint: "aks"
               command: "apply"
               arguments: "-f kubernetes/ingress.yml"
-
-          - task: HelmDeploy@1
-            inputs:
-              connectionType: "Kubernetes Service Connection"
-              kubernetesServiceConnection: "aks"
-              command: "upgrade"
-              chartName: "ingress-nginx/ingress-nginx"
-              releaseName: "aks-ingress-nginx"
-              install: true
-              namespace: "ingress-basic"
-              arguments: "--values values.yml --wait"
