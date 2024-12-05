@@ -26,6 +26,7 @@ stages:
               releaseName: "aks-ingress-nginx"
               install: true
               namespace: "ingress-basic"
+              arguments: "--create-namespace"
 
   - stage: DeployApps
     dependsOn: DeployIngress
