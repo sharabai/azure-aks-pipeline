@@ -1,35 +1,12 @@
 trigger: none
 
 variables:
-  resourceGroup: "vention-azure-CICD"
-  clusterName: "vention-aks-cluster"
-  subscription: "MyAzureStudentSubscription"
+  - group: "Terraform Outputs"
 
 pool: "self-hosted-pool"
 
 stages:
-  - stage: DeployAKS
-    jobs:
-      - job:
-        steps:
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: "$(subscription)"
-              scriptType: "bash"
-              scriptLocation: "inlineScript"
-              inlineScript: |
-                # Check if cluster exists
-                if ! az aks show --name $(clusterName) --resource-group $(resourceGroup) &>/dev/null; then
-                  az aks create \
-                    --resource-group $(resourceGroup) \
-                    --name $(clusterName) \
-                    --node-count 1 \
-                    --generate-ssh-keys
-                fi
-          - template: get-cluster-credentials-task.yml
-
   - stage: DeployIngress
-    dependsOn: DeployAKS
     jobs:
       - job:
         steps:
