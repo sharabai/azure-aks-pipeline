@@ -12,6 +12,8 @@ stages:
         steps:
           - template: add-tool-installer-task.yml
 
+          - template: get-cluster-credentials-task.yml
+
           - script: |
               helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
               helm repo update
@@ -35,12 +37,14 @@ stages:
         steps:
           - template: add-tool-installer-task.yml
 
+          - template: get-cluster-credentials-task.yml
+
           - script: |
               helm repo add bitnami https://charts.bitnami.com/bitnami
               helm repo add examples https://helm.github.io/examples
               helm repo add salaboy https://salaboy.github.io/helm/
               helm repo update
-            displayName: Add bitnami Repo
+            displayName: Add example Helm Repos
 
           - task: HelmDeploy@1
             inputs:
@@ -67,6 +71,8 @@ stages:
       - job:
         steps:
           - template: add-tool-installer-task.yml
+
+          - template: get-cluster-credentials-task.yml
 
           - task: Kubernetes@1
             inputs:
