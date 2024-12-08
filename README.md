@@ -7,6 +7,7 @@ Azure DevOps pipeline that installs Nginx Ingress controller to aks cluster, con
 ## Instruction
 
 Create a project in Azure DevOps, add service connections for this github repo, your azure subscription and aks. You can provision those resources using my Terraform IaC [repo](https://github.com/sharabai/terraform-azure-dev-ops-agent). This pipeline uses self-hosted agent, which is also provisioned at terraform repo. Terraform repo also creates Variable group that has var: "resourceGroup", "clusterName", "subscription". Create those in case you create you don't use my terraform repo.
+It also assumes that Azure-Cli is available on the agent.
 
 ## License
 
